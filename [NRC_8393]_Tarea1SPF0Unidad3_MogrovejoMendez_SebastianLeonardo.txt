@@ -1,0 +1,661 @@
+----------------------------------------------------------------------------------------
+FIFA EJEMPLO
+----------------------------------------------------------------------------------------
+
+select * from "TBFIFA";
+
+----------------------------------------------------------------------------------------
+INSERTAR
+create or replace procedure "SpInsertarFIFA" (IdFIFA in varchar2, nombreFIFA in varchar2)
+AS
+Begin
+    INSERT INTO "TBFIFA" VALUES(IdFIFA,nombreFIFA);
+End;
+/
+
+exec "SpInsertarFIFA" ('Pru','Prueba 1');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+UPDATE
+create or replace procedure "SpActualizarFIFA" (IdFIFA in varchar2, nombreFIFA in varchar2)
+AS
+Begin
+    UPDATE "TBFIFA" SET "VarNombreFIFA"= nombreFIFA WHERE "VarIdFIFA" = IdFIFA;
+End;
+/
+
+exec "SpActualizarFIFA" ('Pru','Prueba 2');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+SELECT
+create or replace procedure "SpSeleccionarFIFA" (IdFIFA in varchar2)
+AS
+  c1 SYS_REFCURSOR;
+Begin
+    open c1 for
+	select "VarIdFIFA","VarNombreFIFA"
+	from "TBFIFA"
+	where "VarIdFIFA" like IdFIFA
+	order by "VarIdFIFA";
+	DBMS_SQL.RETURN_RESULT(c1);
+End;
+/
+
+set serveroutput on
+set linesize 300
+Exec "SpSeleccionarFIFA" ('FIFA20a246');
+
+-------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+Confederacion
+----------------------------------------------------------------------------------------
+
+select * from "TBConfederacion";
+
+----------------------------------------------------------------------------------------
+INSERTAR
+create or replace procedure "SpInsertarConfederacion" (IdConf in varchar2, nombreConf in varchar2)
+AS
+Begin
+    INSERT INTO "TBConfederacion" VALUES(IdConf,nombreConf,'FIFA20a246');
+End;
+/
+
+exec "SpInsertarConfederacion" ('Pru','Prueba 1');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+UPDATE
+create or replace procedure "SpActualizarConfederacion" (IdConf in varchar2, nombreConf in varchar2)
+AS
+Begin
+    UPDATE "TBConfederacion" SET "VarNombreConf"= nombreConf WHERE "VarIdConf" = IdConf;
+End;
+/
+
+exec "SpActualizarConfederacion" ('Pru','Prueba 2');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+SELECT
+create or replace procedure "SpSeleccionarConfederacion" (IdConf in varchar2)
+AS
+  c1 SYS_REFCURSOR;
+Begin
+    open c1 for
+	select "VarIdConf","VarNombreConf","VarIdFIFA"
+	from "TBConfederacion"
+	where "VarIdConf" like IdConf
+	order by "VarIdConf";
+	DBMS_SQL.RETURN_RESULT(c1);
+End;
+/
+
+set serveroutput on
+set linesize 300
+Exec "SpSeleccionarConfederacion" ('Pru');
+
+-------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+Club
+----------------------------------------------------------------------------------------
+
+select * from "TBClub";
+select * from "TBClub" where "VarIdClub" like 'Pru';
+
+----------------------------------------------------------------------------------------
+INSERTAR
+create or replace procedure "SpInsertarClub" (IdClub in varchar2, NombreClub in varchar2, CuentaBancariaClub in varchar2, IdConf in varchar2, EstadoClub in varchar2)
+AS
+Begin
+    INSERT INTO "TBClub" VALUES(IdClub, NombreClub, CuentaBancariaClub, IdConf, EstadoClub);
+End;
+/
+
+exec "SpInsertarClub" ('Pru','Prueba 1','cuenta','Conf01','True');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+UPDATE
+create or replace procedure "SpActualizarClub" (IdClub in varchar2, NombreClub in varchar2, CuentaBancariaClub in varchar2, IdConf in varchar2, EstadoClub in varchar2)
+AS
+Begin
+    UPDATE "TBClub" SET "VarNombreClub"= NombreClub, "VarCuentaBancariaClub" = CuentaBancariaClub,"VarIdConf" = IdConf, "VarEstadoClub" = EstadoClub
+    WHERE "VarIdClub" = IdClub;
+End;
+/
+
+exec "SpActualizarClub" ('Pru','Prueba 2','cuenta2','Conf01','False');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+SELECT
+create or replace procedure "SpSeleccionarClub" (IdClub in varchar2)
+AS
+  c1 SYS_REFCURSOR;
+Begin
+    open c1 for
+	select "VarIdClub","VarNombreClub","VarCuentaBancariaClub","VarIdConf","VarEstadoClub"
+	from "TBClub"
+	where "VarIdClub" like IdClub
+	order by "VarIdClub";
+	DBMS_SQL.RETURN_RESULT(c1);
+End;
+/
+
+set serveroutput on
+column VarIdClub format a8
+column VarNombreClub format a20
+column VarCuentaBancariaClub format a25
+column VarIdConf format a8
+set linesize 300
+Exec "SpSeleccionarClub" ('Pru');
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+ClubJugador
+----------------------------------------------------------------------------------------
+
+select * from "TBClubJugador";
+select * from "TBClubJugador" where "VarIdClub" like 'Pru';
+
+----------------------------------------------------------------------------------------
+INSERTAR
+create or replace procedure "SpInsertarClubJugador" (IdClub in varchar2, IdP in varchar2, IdSeleccion in varchar2, IdConf in varchar2, IdParam in varchar2,IdMundial in varchar2,EstadoClubJug in varchar2)
+AS
+Begin
+    INSERT INTO "TBClubJugador" VALUES(IdClub, IdP, IdSeleccion, IdConf, IdParam,IdMundial,EstadoClubJug);
+End;
+/
+
+exec "SpInsertarClubJugador" ('Pru','Pers15725','Sel021','Conf01','Prm001','2022Qatar','True');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+UPDATE
+create or replace procedure "SpActualizarClubJugador" (IdClub in varchar2, IdP in varchar2, IdParam in varchar2,IdMundial in varchar2,IdClub2 in varchar2, IdP2 in varchar2, IdParam2 in varchar2,IdMundial2 in varchar2,EstadoClubJug in varchar2)
+AS
+Begin
+    UPDATE "TBClubJugador" 
+    SET
+    "VarIdClub" = IdClub2,
+    "VarIdP"= IdP2,
+    "VarIdParam" = IdParam2,
+    "VarIdMundial" = IdMundial2,
+    "VarEstadoClubJug" = EstadoClubJug
+    WHERE "VarIdClub" = IdClub and
+    "VarIdP"= IdP and
+    "VarIdParam" = IdParam and
+    "VarIdMundial" = IdMundial;
+End;
+/
+
+exec "SpActualizarClubJugador" ('Pru','Pers15725','Prm001','2022Qatar','Pru','Pers15725','Prm002','2022Qatar','False');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+SELECT
+create or replace procedure "SpSeleccionarClubJugador" (IdClub in varchar2, IdP in varchar2)
+AS
+  c1 SYS_REFCURSOR;
+Begin
+    open c1 for
+	select
+	"VarIdClub",
+    "VarIdP",
+    "VarIdSeleccion",
+    "VarIdConf",
+    "VarIdParam",
+    "VarIdMundial",
+    "VarEstadoClubJug"
+	from "TBClubJugador"
+	where "VarIdClub" like IdClub and "VarIdP" like IdP
+	order by "VarIdClub","VarIdP";
+	DBMS_SQL.RETURN_RESULT(c1);
+End;
+/
+
+set serveroutput on
+column VarIdClub format a8
+column VarIdP format a10
+column VarIdSeleccion format a8
+column VarIdConf format a8
+column VarIdMundial format a15
+column VarIdParam format a10
+set linesize 300
+Exec "SpSeleccionarClubJugador" ('Pru','Pers15725');
+
+-------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+Parametro
+----------------------------------------------------------------------------------------
+
+select * from "TBParametro";
+select * from "TBParametro" where "VarIdParam" like 'Pru';
+
+----------------------------------------------------------------------------------------
+INSERTAR
+create or replace procedure "SpInsertarParametro" (IdParam in varchar2, NombreParam in varchar2, EstadoParam in varchar2, DescripcionParam in varchar2)
+AS
+Begin
+    INSERT INTO "TBParametro" VALUES(IdParam, NombreParam, EstadoParam, DescripcionParam);
+End;
+/
+
+exec "SpInsertarParametro" ('Pru','PruebaParam','True','Hola prueba');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+UPDATE
+create or replace procedure "SpActualizarParametro" (IdParam in varchar2, NombreParam in varchar2, EstadoParam in varchar2, DescripcionParam in varchar2)
+AS
+Begin
+    UPDATE "TBParametro" 
+    SET
+    "VarNombreParam"= NombreParam,
+    "VarEstadoParam" = EstadoParam,
+    "VarDescripcionParam" = DescripcionParam
+    WHERE "VarIdParam" = IdParam;
+End;
+/
+
+exec "SpActualizarParametro" ('Pru','PruebaParam','False','Hola prueba 2');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+SELECT
+create or replace procedure "SpSeleccionarParametro" (IdParam in varchar2)
+AS
+  c1 SYS_REFCURSOR;
+Begin
+    open c1 for
+	select "VarIdParam","VarNombreParam","VarEstadoParam","VarDescripcionParam"
+	from "TBParametro"
+	where "VarIdParam" like IdParam
+	order by "VarIdParam";
+	DBMS_SQL.RETURN_RESULT(c1);
+End;
+/
+
+set serveroutput on
+column VarNombreParam format a15
+column VarEstadoParam format a5
+set linesize 300
+Exec "SpSeleccionarParametro" ('Pru');
+
+-------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+JugConvocado
+----------------------------------------------------------------------------------------
+
+select * from "TBJugConvocado";
+select * from "TBJugConvocado" where "VarIdP" like 'Pru';
+
+----------------------------------------------------------------------------------------
+INSERTAR
+create or replace procedure "SpInsertarJugConvocado" (IdP in varchar2, IdSeleccion in varchar2, IdMundial in varchar2,DiasEnMundialJc in number, EstadoJC in varchar2)
+AS
+Begin
+    INSERT INTO "TBJugConvocado" VALUES(IdP, IdSeleccion, IdMundial,DiasEnMundialJc, EstadoJC);
+End;
+/
+
+exec "SpInsertarJugConvocado" ('Pru','Sel021','2022Qatar',24,'True');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+UPDATE
+create or replace procedure "SpActualizarJugConvocado" (IdP in varchar2, IdSeleccion in varchar2, IdMundial in varchar2, DiasEnMundialJc in number, EstadoJC in varchar2)
+AS
+Begin
+    UPDATE "TBJugConvocado" 
+    SET
+    "VarIdSeleccion"= IdSeleccion,
+    "VarIdMundial" = IdMundial,
+    "IntDiasEnMundialJc" = DiasEnMundialJc,
+    "VarEstadoJC" = EstadoJC
+    WHERE "VarIdP" = IdP;
+End;
+/
+
+exec "SpActualizarJugConvocado" ('Pru','Sel021','2022Qatar',25,'False');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+SELECT
+create or replace procedure "SpSeleccionarJugConvocado" (IdP in varchar2)
+AS
+  c1 SYS_REFCURSOR;
+Begin
+    open c1 for
+	select "TBJugConvocado"."VarIdP",
+	"TBPersona"."VarNombreP", "TBPersona"."VarGeneroP","TBPersona"."VarCorreoP",
+	"TBJugConvocado"."VarIdSeleccion",
+	"TBJugConvocado"."VarIdMundial",
+	"TBJugConvocado"."IntDiasEnMundialJc",
+	"TBJugConvocado"."VarEstadoJC"
+	from "TBJugConvocado"
+	inner join "TBPersona" on "TBJugConvocado"."VarIdP" = "TBPersona"."VarIdP"
+	where "TBJugConvocado"."VarIdP" like IdP
+	order by "TBJugConvocado"."VarIdP";
+	DBMS_SQL.RETURN_RESULT(c1);
+End;
+/
+
+set serveroutput on
+column VarNombreP format a20
+column VarGeneroP format a10
+column VarCorreoP format a20
+set linesize 300
+Exec "SpSeleccionarJugConvocado" ('Pru');
+
+-------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+Persona
+----------------------------------------------------------------------------------------
+
+select * from "TBPersona";
+select * from "TBPersona" where "VarIdP" like 'Pru';
+
+----------------------------------------------------------------------------------------
+INSERTAR
+create or replace procedure "SpInsertarPersona" (IdP in varchar2, NombreP in varchar2, GeneroP in varchar2, CorreoP in varchar2)
+AS
+Begin
+    INSERT INTO "TBPersona" VALUES(IdP, NombreP, GeneroP, CorreoP);
+End;
+/
+
+exec "SpInsertarPersona" ('Pru','Sebastian Prueba','NB','correo@prueba.com');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+UPDATE
+create or replace procedure "SpActualizarPersona" (IdP in varchar2, NombreP in varchar2, GeneroP in varchar2, CorreoP in varchar2)
+AS
+Begin
+    UPDATE "TBPersona" 
+    SET
+    "VarNombreP"= NombreP,
+    "VarGeneroP" = GeneroP,
+    "VarCorreoP" = CorreoP
+    WHERE "VarIdP" = IdP;
+End;
+/
+
+exec "SpActualizarPersona" ('Pru','Sebastian Prueba 2','M','correo@prueba.com');
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+SELECT
+create or replace procedure "SpSeleccionarPersona" (IdP in varchar2)
+AS
+  c1 SYS_REFCURSOR;
+Begin
+    open c1 for
+	select "VarIdP","VarNombreP","VarGeneroP","VarCorreoP"
+	from "TBPersona"
+	where "VarIdP" like IdP
+	order by "VarIdP";
+	DBMS_SQL.RETURN_RESULT(c1);
+End;
+/
+
+set serveroutput on
+column VarNombreP format a20
+column VarGeneroP format a10
+column VarCorreoP format a20
+set linesize 300
+Exec "SpSeleccionarPersona" ('Pru');
+
+
+QUERYS
+
+1. ------------------------------------------------
+1. Cuántos clubes en determinado continente están registrados.
+------------------------------ Funcion ---------------------------------------------
+create or replace function "FnClubesEnContinente" (IdContin in varchar2)
+return number
+AS
+  total float;
+Begin
+    SELECT COUNT(DISTINCT "TBClubJugador"."VarIdClub") INTO total
+FROM "TBClubJugador"
+INNER JOIN "TBJugConvocado" ON "TBClubJugador"."VarIdP" = "TBJugConvocado"."VarIdP"
+INNER JOIN "TBSeleccion" ON "TBJugConvocado"."VarIdSeleccion" = "TBSeleccion"."VarIdSeleccion"
+INNER JOIN "TBPais" ON "TBSeleccion"."VarIdPais" = "TBPais"."VarIdPais"
+INNER JOIN "TBContinente" ON "TBPais"."VarIdContin" = "TBContinente"."VarIdContin"
+WHERE "TBClubJugador"."VarIdParam" LIKE 'Prm004' AND "TBClubJugador"."VarIdMundial" = '2022Qatar' and "TBContinente"."VarIdContin" like IdContin
+GROUP BY "TBContinente"."VarNombreContin";
+    return total;
+End;
+/
+
+set serveroutput on
+DECLARE    
+   total float;
+   Conti varchar2(40) := 'Conti01';
+BEGIN    
+   total := "FnClubesEnContinente" (Conti);    
+   dbms_output.put_line('El continente de identificador '||Conti||' alberga '||total||' clubes registrados al programa.');    
+END;    
+/
+
+select "FnClubesEnContinente" ('Conti01') from dual;
+
+2. ------------------------------------------------
+2. Cuántos Jugadores cumplen con los distintos parametros
+------------------------------ Funcion ---------------------------------------------
+create or replace function "FnJugadoresCumplenParametro" (parametro in varchar2)
+return number
+AS
+  total float;
+Begin
+    SELECT COUNT("TBClubJugador"."VarIdP") INTO total
+FROM "TBJugConvocado"
+INNER JOIN "TBClubJugador" ON "TBJugConvocado"."VarIdP" = "TBClubJugador"."VarIdP"
+INNER JOIN "TBParametro" ON "TBClubJugador"."VarIdParam" = "TBParametro"."VarIdParam"
+WHERE "TBClubJugador"."VarIdParam" LIKE parametro AND "TBClubJugador"."VarIdMundial" = '2022Qatar'
+GROUP BY "TBParametro"."VarIdParam", "TBParametro"."VarDescripcionParam";
+    return total;
+End;
+/
+
+set serveroutput on
+DECLARE    
+   total float;
+   parametro varchar2(40) := 'Prm002';
+BEGIN    
+   total := "FnJugadoresCumplenParametro" (parametro);    
+   dbms_output.put_line('Para el parámetro de identificador '||parametro||' existen '||total||' jugadores que lo cumplen.');    
+END;    
+/
+
+select "FnJugadoresCumplenParametro" ('Prm002') from dual;
+
+3. ------------------------------------------------
+3. Qué clubes de una determinada confederación cumplen con los 2 anteriores apartados.
+create or replace procedure "SpClubesValidosPorConfederacion" (IdConf in varchar2)
+AS
+  c1 SYS_REFCURSOR;
+Begin
+    open c1 for
+	SELECT DISTINCT "TBConfederacion"."VarIdConf",
+"TBConfederacion"."VarNombreConf", "TBClub"."VarNombreClub",
+COUNT("TBClubJugador"."VarIdP")
+FROM "TBConfederacion"
+INNER JOIN "TBClub" ON "TBConfederacion"."VarIdConf" = "TBClub"."VarIdConf"
+INNER JOIN "TBClubJugador" ON "TBClub"."VarIdClub" = "TBClubJugador"."VarIdClub"
+WHERE "TBClubJugador"."VarIdMundial" = '2022Qatar' and "TBConfederacion"."VarIdConf" like IdConf
+GROUP BY "TBConfederacion"."VarIdConf","TBConfederacion"."VarNombreConf",
+"TBClub"."VarNombreClub","TBClubJugador"."VarIdP"
+HAVING COUNT("TBClubJugador"."VarIdP") = 3
+ORDER BY "TBConfederacion"."VarIdConf";
+	DBMS_SQL.RETURN_RESULT(c1);
+End;
+/
+
+set serveroutput on
+column VarIdConf format a10
+column VarNombreConf format a15
+column VarNombreClub format a20
+set linesize 300
+Exec "SpClubesValidosPorConfederacion" ('Conf01');
+
+4. ------------------------------------------------
+4. A qué clubes pertenecen los jugadores con determinados dias en el mundial
+create or replace procedure "SpClubesDeJugadoresPorDias" (DiasEnMundial in int)
+AS
+  c1 SYS_REFCURSOR;
+Begin
+    open c1 for
+	SELECT DISTINCT "TBClub"."VarIdClub", "TBClub"."VarNombreClub",
+"TBPersona"."VarNombreP", "TBJugConvocado"."IntDiasEnMundialJc"
+FROM "TBClub"
+INNER JOIN "TBClubJugador" ON "TBClub"."VarIdClub" = "TBClubJugador"."VarIdClub"
+INNER JOIN "TBJugConvocado" ON "TBClubJugador"."VarIdP" = "TBJugConvocado"."VarIdP"
+INNER JOIN "TBPersona" ON "TBJugConvocado"."VarIdP" = "TBPersona"."VarIdP"
+WHERE "TBJugConvocado"."IntDiasEnMundialJc" LIKE DiasEnMundial  AND "TBClubJugador"."VarIdMundial" = '2022Qatar';
+	DBMS_SQL.RETURN_RESULT(c1);
+End;
+/
+
+set serveroutput on
+set linesize 300
+column VarIdClub format a10
+column VarNombreP format a20
+Exec "SpClubesDeJugadoresPorDias" (30);
+
+5. ------------------------------------------------
+5. Por continente, ¿cuántos jugadores alrededor del mundo pertenecen a una determinada confederación?
+create or replace procedure "SpJugadoresPorConfederacion" (IdConf in varchar2)
+AS
+  c1 SYS_REFCURSOR;
+Begin
+    open c1 for
+	SELECT "TBContinente"."VarIdContin", "TBContinente"."VarNombreContin",
+"TBClubJugador"."VarIdConf" as "Confederacion",
+COUNT(DISTINCT "TBClubJugador"."VarIdP") AS "Count_VarIdP"
+FROM "TBContinente"
+INNER JOIN "TBPais" ON "TBContinente"."VarIdContin" = "TBPais"."VarIdContin"
+INNER JOIN "TBSeleccion" ON "TBPais"."VarIdPais" = "TBSeleccion"."VarIdPais"
+INNER JOIN "TBJugConvocado" ON "TBSeleccion"."VarIdSeleccion" = "TBJugConvocado"."VarIdSeleccion"
+INNER JOIN "TBClubJugador" ON "TBJugConvocado"."VarIdP" = "TBClubJugador"."VarIdP"
+WHERE "TBClubJugador"."VarIdConf" LIKE IdConf AND "TBClubJugador"."VarIdMundial" = '2022Qatar'
+GROUP BY "TBContinente"."VarIdContin", "TBContinente"."VarNombreContin","TBClubJugador"."VarIdConf"
+ORDER BY "TBContinente"."VarIdContin";
+	DBMS_SQL.RETURN_RESULT(c1);
+End;
+/
+
+set serveroutput on
+set linesize 300
+column VarIdContin format a10
+column VarNombreContin format a20
+column Confederacion format a15
+Exec "SpJugadoresPorConfederacion" ('Conf06');
+
+6. ------------------------------------------------
+6. Cuanto gano un determinado club
+------------------------------ Funcion ---------------------------------------------
+create or replace function "FnGananciasClub" (IdClub in varchar2)
+return number
+AS
+  total float;
+Begin
+    SELECT SUM(DISTINCT "TBJugConvocado"."IntDiasEnMundialJc") * 10000 INTO total
+FROM "TBClub"
+INNER JOIN "TBClubJugador" ON "TBClub"."VarIdClub" = "TBClubJugador"."VarIdClub"
+INNER JOIN "TBJugConvocado" ON "TBClubJugador"."VarIdP" = "TBJugConvocado"."VarIdP"
+WHERE "TBClubJugador"."VarIdParam" LIKE 'Prm001' AND "TBClubJugador"."VarIdMundial" = '2022Qatar' and "TBClub"."VarIdClub" like IdClub
+GROUP BY "TBClub"."VarIdClub","TBClub"."VarNombreClub"
+ORDER BY (SUM(DISTINCT "TBJugConvocado"."IntDiasEnMundialJc") * 10000) DESC;
+    return total;
+End;
+/
+
+set serveroutput on
+DECLARE    
+   total float;
+   club varchar2(40) := 'Clu001';
+BEGIN    
+   total := "FnGananciasClub" (club);
+   dbms_output.put_line('El club de identificador '||club||' tiene '||total||' dólares en ganancias.');    
+END;    
+/
+
+select "FnGananciasClub" ('Clu001') from dual;
+
+7. ------------------------------------------------
+7. Qué cantidad de dinero total tiene que pagar la FIFA a una determinada confederación.
+------------------------------ Funcion ---------------------------------------------
+create or replace function "FnPagoConfederacion" (IdConf in varchar2)
+return number
+AS
+  total float;
+Begin
+    SELECT SUM("TBJugConvocado"."IntDiasEnMundialJc") * 10000 INTO total
+from "TBClubJugador"
+INNER JOIN "TBJugConvocado" ON "TBClubJugador"."VarIdP" = "TBJugConvocado"."VarIdP"
+INNER JOIN "TBClub" ON "TBClub"."VarIdClub" = "TBClubJugador"."VarIdClub"
+INNER JOIN "TBConfederacion" ON "TBConfederacion"."VarIdConf" = "TBClub"."VarIdConf"
+where "TBClubJugador"."VarIdParam" LIKE 'Prm001' AND "TBClubJugador"."VarIdMundial" = '2022Qatar' and "TBConfederacion"."VarIdConf" like IdConf
+GROUP BY "TBConfederacion"."VarIdConf", "TBConfederacion"."VarNombreConf";
+	return total;
+End;
+/
+
+set serveroutput on
+DECLARE    
+   total float;
+   confederacion varchar2(40) := 'Conf06';
+BEGIN    
+   total := "FnPagoConfederacion" (confederacion);
+   dbms_output.put_line('A la confederación de identificador '||confederacion||' se le debe pagar un '||total||' dólares.');    
+END;    
+/
+
+select "FnPagoConfederacion" ('Conf06') from dual;
+
+8. ------------------------------------------------
+8. ¿Cuantos gastos hubo un determinado mundial?
+------------------------------ Funcion ---------------------------------------------
+create or replace function "FnGastosMundial" (IdMundial in varchar2)
+return number
+AS
+  total float;
+Begin
+    SELECT CASE
+WHEN "TBMundial"."VarIdMundial" = '2018Russia' THEN SUM("TBJugConvocado"."IntDiasEnMundialJc") * 8000
+WHEN "TBMundial"."VarIdMundial" = '2022Qatar' THEN SUM("TBJugConvocado"."IntDiasEnMundialJc") * 10000
+END INTO total
+FROM "TBMundial"
+LEFT JOIN "TBContinente" ON "TBContinente"."VarIdMundial" = "TBMundial"."VarIdMundial"
+LEFT JOIN "TBPais" ON "TBPais"."VarIdContin" = "TBContinente"."VarIdContin"
+LEFT JOIN "TBSeleccion" ON "TBSeleccion"."VarIdPais" = "TBPais"."VarIdPais"
+LEFT JOIN "TBJugConvocado" ON "TBJugConvocado"."VarIdSeleccion" = "TBSeleccion"."VarIdSeleccion"
+LEFT JOIN "TBClubJugador" ON "TBClubJugador"."VarIdP" = "TBJugConvocado"."VarIdP"
+WHERE "TBClubJugador"."VarIdParam" LIKE 'Prm001' and "TBMundial"."VarIdMundial" like IdMundial
+GROUP BY "TBMundial"."VarIdMundial", "TBClubJugador"."VarIdParam";
+	return total;
+End;
+/
+
+set serveroutput on
+DECLARE    
+   total float;
+   mundial varchar2(40) := '2018Russia';
+BEGIN    
+   total := "FnGastosMundial" (mundial);
+   dbms_output.put_line('El mundial de identificador '||mundial||' hubo '||total||' de dólares en gastos.');    
+END;    
+/
+
+select "FnGastosMundial" ('2018Russia') from dual;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
